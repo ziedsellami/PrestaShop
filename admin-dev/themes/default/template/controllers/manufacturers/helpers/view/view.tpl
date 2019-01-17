@@ -1,5 +1,5 @@
 {**
- * 2007-2017 PrestaShop
+ * 2007-2018 PrestaShop
  *
  * NOTICE OF LICENSE
  *
@@ -18,7 +18,7 @@
  * needs please refer to http://www.prestashop.com for more information.
  *
  * @author    PrestaShop SA <contact@prestashop.com>
- * @copyright 2007-2017 PrestaShop SA
+ * @copyright 2007-2018 PrestaShop SA
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * International Registered Trademark & Property of PrestaShop SA
  *}
@@ -36,7 +36,7 @@
 			<div class="panel-heading">
 				{$addresse.firstname} {$addresse.lastname}
 				<div class="pull-right">
-					<a class="btn btn-default" href="{$link->getAdminLink('AdminManufacturers')|escape:'html':'UTF-8'}&amp;id_address={$addresse.id_address}&amp;editaddresses=1">
+					<a class="btn btn-default" href="{$link->getAdminLink('AdminManufacturers', true, [], ['id_address' => $addresse.id_address, 'editaddresses' => 1])|escape:'html':'UTF-8'}">
 						<i class="icon-edit"></i>
 						{l s='Edit' d='Admin.Actions'}</a>
 				</div>

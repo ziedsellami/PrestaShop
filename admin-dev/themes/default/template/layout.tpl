@@ -1,5 +1,5 @@
 {**
- * 2007-2017 PrestaShop
+ * 2007-2018 PrestaShop
  *
  * NOTICE OF LICENSE
  *
@@ -18,7 +18,7 @@
  * needs please refer to http://www.prestashop.com for more information.
  *
  * @author    PrestaShop SA <contact@prestashop.com>
- * @copyright 2007-2017 PrestaShop SA
+ * @copyright 2007-2018 PrestaShop SA
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * International Registered Trademark & Property of PrestaShop SA
  *}
@@ -35,7 +35,7 @@
   <div class="bootstrap">
     <div class="alert alert-danger">
       <button type="button" class="close" data-dismiss="alert">&times;</button>
-      {$error}
+      {$error|escape:'html':'UTF-8'}
     </div>
   </div>
 {/if}
@@ -45,13 +45,13 @@
 		<div class="alert alert-danger">
 			<button type="button" class="close" data-dismiss="alert">&times;</button>
 		{if count($errors) == 1}
-			{reset($errors)}
+			{reset($errors)|escape:'html':'UTF-8'}
 		{else }
 			{l s='%d errors' sprintf=[$errors|count]}
 			<br/>
 			<ol>
 				{foreach $errors as $error}
-					<li>{$error}</li>
+					<li>{$error|escape:'html':'UTF-8'}</li>
 				{/foreach}
 			</ol>
 		{/if}
@@ -95,4 +95,5 @@
 	</div>
 {/if}
 {$page}
+<div class="mobile-layer"></div>
 {$footer}

@@ -1,5 +1,5 @@
 {**
- * 2007-2017 PrestaShop
+ * 2007-2018 PrestaShop
  *
  * NOTICE OF LICENSE
  *
@@ -18,7 +18,7 @@
  * needs please refer to http://www.prestashop.com for more information.
  *
  * @author    PrestaShop SA <contact@prestashop.com>
- * @copyright 2007-2017 PrestaShop SA
+ * @copyright 2007-2018 PrestaShop SA
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * International Registered Trademark & Property of PrestaShop SA
  *}
@@ -86,7 +86,7 @@
 	<!-- shipping update modal -->
 	<div class="modal fade" id="modal-shipping">
 		<div class="modal-dialog">
-			<form method="post" action="{$link->getAdminLink('AdminOrders')|escape:'html':'UTF-8'}&amp;vieworder&amp;id_order={$order->id|intval}">
+			<form method="post" action="{$link->getAdminLink('AdminOrders', true, [], ['id_order' => $order->id|intval, 'vieworder' => 1])|escape:'html':'UTF-8'}">
 				<input type="hidden" name="submitShippingNumber" id="submitShippingNumber" value="1" />
 				<input type="hidden" name="id_order_carrier" id="id_order_carrier" />
 				<div class="modal-content">
