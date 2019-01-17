@@ -1,6 +1,6 @@
 <?php
 /**
- * 2007-2017 PrestaShop
+ * 2007-2018 PrestaShop.
  *
  * NOTICE OF LICENSE
  *
@@ -19,13 +19,13 @@
  * needs please refer to http://www.prestashop.com for more information.
  *
  * @author    PrestaShop SA <contact@prestashop.com>
- * @copyright 2007-2017 PrestaShop SA
+ * @copyright 2007-2018 PrestaShop SA
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
+use PrestaShop\PrestaShop\Adapter\Supplier\SupplierProductSearchProvider;
 use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchQuery;
 use PrestaShop\PrestaShop\Core\Product\Search\SortOrder;
-use PrestaShop\PrestaShop\Adapter\Supplier\SupplierProductSearchProvider;
 
 class SupplierControllerCore extends ProductListingFrontController
 {
@@ -33,7 +33,7 @@ class SupplierControllerCore extends ProductListingFrontController
 
     /** @var Supplier */
     protected $supplier;
-    private $label;
+    protected $label;
 
     public function canonicalRedirection($canonicalURL = '')
     {
@@ -73,10 +73,16 @@ class SupplierControllerCore extends ProductListingFrontController
     public function initContent()
     {
         if (Configuration::get('PS_DISPLAY_SUPPLIERS')) {
+            parent::initContent();
+
             if (Validate::isLoadedObject($this->supplier) && $this->supplier->active && $this->supplier->isAssociatedToShop()) {
                 $this->assignSupplier();
                 $this->label = $this->trans(
-                    'List of products by supplier %s', array($this->supplier->name), 'Shop.Theme.Catalog'
+                    'List of products by supplier %supplier_name%',
+                    array(
+                        '%supplier_name%' => $this->supplier->name,
+                    ),
+                    'Shop.Theme.Catalog'
                 );
                 $this->doProductSearch(
                     'catalog/listing/supplier',
@@ -85,11 +91,12 @@ class SupplierControllerCore extends ProductListingFrontController
             } else {
                 $this->assignAll();
                 $this->label = $this->trans(
-                    'List of all suppliers', array(), 'Shop.Theme.Catalog'
+                    'List of all suppliers',
+                    array(),
+                    'Shop.Theme.Catalog'
                 );
                 $this->setTemplate('catalog/suppliers', array('entity' => 'suppliers'));
             }
-            parent::initContent();
         } else {
             $this->redirect_after = '404';
             $this->redirect();
@@ -101,8 +108,7 @@ class SupplierControllerCore extends ProductListingFrontController
         $query = new ProductSearchQuery();
         $query
             ->setIdSupplier($this->supplier->id)
-            ->setSortOrder(new SortOrder('product', 'position', 'asc'))
-        ;
+            ->setSortOrder(new SortOrder('product', 'position', 'asc'));
 
         return $query;
     }

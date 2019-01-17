@@ -1,6 +1,6 @@
 <?php
 /**
- * 2007-2017 PrestaShop
+ * 2007-2018 PrestaShop
  *
  * NOTICE OF LICENSE
  *
@@ -19,7 +19,7 @@
  * needs please refer to http://www.prestashop.com for more information.
  *
  * @author    PrestaShop SA <contact@prestashop.com>
- * @copyright 2007-2017 PrestaShop SA
+ * @copyright 2007-2018 PrestaShop SA
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
@@ -42,8 +42,8 @@ function customization_field_multishop_lang()
         $customization_lang = array(
             'id_customization_field' => $value['id_customization_field'],
             'id_lang' => $value['id_lang'],
-            'name' => pSQL($value['name'])
-            );
+            'name' => pSQL($value['name']),
+        );
         foreach ($shops as $shop) {
             $customization_lang['id_shop'] = $shop['id_shop'];
             $data[] = $customization_lang;

@@ -1,6 +1,6 @@
 <?php
 /**
- * 2007-2017 PrestaShop
+ * 2007-2018 PrestaShop
  *
  * NOTICE OF LICENSE
  *
@@ -19,7 +19,7 @@
  * needs please refer to http://www.prestashop.com for more information.
  *
  * @author    PrestaShop SA <contact@prestashop.com>
- * @copyright 2007-2017 PrestaShop SA
+ * @copyright 2007-2018 PrestaShop SA
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
@@ -55,7 +55,7 @@ Context::getContext()->smarty->assign(array(
     'js_def' => array(
         'baseAdminDir' => __PS_BASE_URI__.basename(_PS_ADMIN_DIR_).'/',
         'baseDir' => __PS_BASE_URI__,
-    )
+    ),
 ));
 echo Context::getContext()->smarty->fetch($header_tpl);
 echo Context::getContext()->smarty->fetch($tool_tpl);

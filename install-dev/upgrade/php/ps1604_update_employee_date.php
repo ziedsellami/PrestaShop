@@ -1,6 +1,6 @@
 <?php
 /**
- * 2007-2017 PrestaShop
+ * 2007-2018 PrestaShop
  *
  * NOTICE OF LICENSE
  *
@@ -19,7 +19,7 @@
  * needs please refer to http://www.prestashop.com for more information.
  *
  * @author    PrestaShop SA <contact@prestashop.com>
- * @copyright 2007-2017 PrestaShop SA
+ * @copyright 2007-2018 PrestaShop SA
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
@@ -28,5 +28,6 @@ function ps1604_update_employee_date()
     if (defined('_PS_CREATION_DATE_')) {
         return Db::getInstance()->execute('UPDATE `'._DB_PREFIX_.'employee` SET stats_date_from = \''.addslashes(_PS_CREATION_DATE_).'\' WHERE `stats_date_from` < \''.addslashes(_PS_CREATION_DATE_).'\'');
     }
+
     return true;
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * 2007-2017 PrestaShop
+ * 2007-2018 PrestaShop
  *
  * NOTICE OF LICENSE
  *
@@ -19,13 +19,13 @@
  * needs please refer to http://www.prestashop.com for more information.
  *
  * @author    PrestaShop SA <contact@prestashop.com>
- * @copyright 2007-2017 PrestaShop SA
+ * @copyright 2007-2018 PrestaShop SA
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
 
-use Symfony\Component\Yaml\Yaml;
 use PrestaShopBundle\Install\Database;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Step 3 : configure database
@@ -82,6 +82,7 @@ class InstallControllerHttpDatabase extends InstallControllerHttp implements Htt
         if (!isset($this->session->database_engine)) {
             $this->session->database_engine = $this->model_database->getBestEngine($this->session->database_server, $this->session->database_name, $this->session->database_login, $this->session->database_password);
         }
+
         return true;
     }
 
@@ -139,7 +140,7 @@ class InstallControllerHttpDatabase extends InstallControllerHttp implements Htt
     {
         if (!$this->session->database_server) {
             if (file_exists(_PS_ROOT_DIR_.'/app/config/parameters.php')) {
-                $parameters = require(_PS_ROOT_DIR_.'/app/config/parameters.php');
+                $parameters = require _PS_ROOT_DIR_.'/app/config/parameters.php';
             } else {
                 $parameters = Yaml::parse(file_get_contents(_PS_ROOT_DIR_.'/app/config/parameters.yml.dist'));
             }

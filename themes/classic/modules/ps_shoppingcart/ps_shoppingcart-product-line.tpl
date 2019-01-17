@@ -1,5 +1,5 @@
 {**
- * 2007-2017 PrestaShop
+ * 2007-2018 PrestaShop
  *
  * NOTICE OF LICENSE
  *
@@ -18,7 +18,7 @@
  * needs please refer to http://www.prestashop.com for more information.
  *
  * @author    PrestaShop SA <contact@prestashop.com>
- * @copyright 2007-2017 PrestaShop SA
+ * @copyright 2007-2018 PrestaShop SA
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  * International Registered Trademark & Property of PrestaShop SA
  *}
@@ -46,7 +46,7 @@
                                 <span>{$field.label}</span>
                                 {if $field.type == 'text'}
                                     <span>{$field.text nofilter}</span>
-                                {else if $field.type == 'image'}
+                                {elseif $field.type == 'image'}
                                     <img src="{$field.image.small.url}">
                                 {/if}
                             </li>

@@ -1,6 +1,6 @@
 <?php
 /**
- * 2007-2017 PrestaShop
+ * 2007-2018 PrestaShop.
  *
  * NOTICE OF LICENSE
  *
@@ -19,7 +19,7 @@
  * needs please refer to http://www.prestashop.com for more information.
  *
  * @author    PrestaShop SA <contact@prestashop.com>
- * @copyright 2007-2017 PrestaShop SA
+ * @copyright 2007-2018 PrestaShop SA
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
@@ -57,6 +57,7 @@ class StockController extends ApiController
 
     /**
      * @param Request $request
+     *
      * @return JsonResponse
      */
     public function listProductsAction(Request $request)
@@ -71,7 +72,7 @@ class StockController extends ApiController
             'info' => array(
                 'edit_bulk_url' => $this->container->get('router')->generate('api_stock_bulk_edit_products'),
             ),
-            'data' => $this->stockRepository->getData($queryParamsCollection)
+            'data' => $this->stockRepository->getData($queryParamsCollection),
         );
         $totalPages = $this->stockRepository->countPages($queryParamsCollection);
 
@@ -80,6 +81,7 @@ class StockController extends ApiController
 
     /**
      * @param Request $request
+     *
      * @return JsonResponse
      */
     public function editProductAction(Request $request)
@@ -93,7 +95,7 @@ class StockController extends ApiController
 
         $productIdentity = ProductIdentity::fromArray(array(
             'product_id' => $request->attributes->get('productId'),
-            'combination_id' => $request->attributes->get('combinationId', 0)
+            'combination_id' => $request->attributes->get('combinationId', 0),
         ));
 
         try {
@@ -108,6 +110,7 @@ class StockController extends ApiController
 
     /**
      * @param Request $request
+     *
      * @return JsonResponse
      */
     public function bulkEditProductsAction(Request $request)
@@ -132,6 +135,7 @@ class StockController extends ApiController
 
     /**
      * @param Request $request
+     *
      * @return CsvResponse|JsonResponse
      */
     public function listProductsExportAction(Request $request)
@@ -162,6 +166,7 @@ class StockController extends ApiController
             'product_reserved_quantity' => $translator->trans('Reserved quantity', array(), 'Admin.Catalog.Feature'),
             'product_available_quantity' => $translator->trans('Available quantity', array(), 'Admin.Catalog.Feature'),
             'product_low_stock_threshold' => $translator->trans('Low stock level', array(), 'Admin.Catalog.Feature'),
+            'product_low_stock_alert' => $translator->trans('Send me an email when the quantity is below or equals this level', array(), 'Admin.Catalog.Feature'),
         );
 
         return (new CsvResponse())
@@ -173,6 +178,7 @@ class StockController extends ApiController
 
     /**
      * @param Request $request
+     *
      * @return int
      */
     private function guardAgainstMissingDeltaParameter(Request $request)
@@ -193,6 +199,7 @@ class StockController extends ApiController
     /**
      * @param $content
      * @param $message
+     *
      * @return mixed
      */
     private function guardAgainstInvalidRequestContent($content, $message)
@@ -208,12 +215,14 @@ class StockController extends ApiController
 
     /**
      * @param Request $request
+     *
      * @return mixed
      */
     private function guardAgainstInvalidBulkEditionRequest(Request $request)
     {
         if (strlen($request->getContent()) == 0) {
             $message = 'The request body should contain a JSON-encoded array of product identifiers and deltas';
+
             throw new BadRequestHttpException(sprintf('Invalid JSON content (%s)', $message));
         }
 
@@ -222,6 +231,7 @@ class StockController extends ApiController
 
     /**
      * @param Request $request
+     *
      * @return mixed
      */
     private function guardAgainstMissingParametersInBulkEditionRequest(Request $request)
@@ -229,7 +239,7 @@ class StockController extends ApiController
         $decodedContent = $this->guardAgainstInvalidJsonBody($request->getContent());
 
         $message = 'Each item of JSON-encoded array in the request body should contain ' .
-            'a product id ("product_id"), a quantity delta ("delta"). '.
+            'a product id ("product_id"), a quantity delta ("delta"). ' .
             'The item of index #%d is invalid.';
 
         array_walk($decodedContent, function ($item, $index) use ($message) {

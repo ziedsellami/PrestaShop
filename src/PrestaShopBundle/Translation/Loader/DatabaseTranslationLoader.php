@@ -1,7 +1,7 @@
 <?php
 
 /**
- * 2007-2017 PrestaShop
+ * 2007-2018 PrestaShop.
  *
  * NOTICE OF LICENSE
  *
@@ -20,16 +20,16 @@
  * needs please refer to http://www.prestashop.com for more information.
  *
  * @author    PrestaShop SA <contact@prestashop.com>
- * @copyright 2007-2017 PrestaShop SA
+ * @copyright 2007-2018 PrestaShop SA
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
 
 namespace PrestaShopBundle\Translation\Loader;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Translation\Loader\LoaderInterface;
 use Symfony\Component\Translation\MessageCatalogue;
-use Doctrine\ORM\EntityManagerInterface;
 
 class DatabaseTranslationLoader implements LoaderInterface
 {
@@ -49,39 +49,36 @@ class DatabaseTranslationLoader implements LoaderInterface
      */
     public function load($resource, $locale, $domain = 'messages', $theme = null)
     {
-        $lang = $this->entityManager
-            ->getRepository('PrestaShopBundle:Lang')
-            ->findOneByLocale($locale)
-        ;
+        static $langs = array();
+        if (!array_key_exists($locale, $langs)) {
+            $langs[$locale] = $this->entityManager
+                ->getRepository('PrestaShopBundle:Lang')
+                ->findOneByLocale($locale);
+        }
 
         $translationRepository = $this->entityManager
-            ->getRepository('PrestaShopBundle:Translation')
-        ;
+            ->getRepository('PrestaShopBundle:Translation');
 
         $queryBuilder = $translationRepository
             ->createQueryBuilder('t')
             ->where('t.lang =:lang')
-            ->setParameter('lang', $lang)
-        ;
+            ->setParameter('lang', $langs[$locale]);
 
         if (!is_null($theme)) {
             $queryBuilder
                 ->andWhere('t.theme = :theme')
-                ->setParameter('theme', $theme)
-            ;
+                ->setParameter('theme', $theme);
         } else {
             $queryBuilder->andWhere('t.theme IS NULL');
         }
 
         if ($domain !== '*') {
             $queryBuilder->andWhere('REGEXP(t.domain, :domain) = true')
-                ->setParameter('domain', $domain)
-            ;
+                ->setParameter('domain', $domain);
         }
 
         $translations = $queryBuilder->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
 
         $catalogue = new MessageCatalogue($locale);
 

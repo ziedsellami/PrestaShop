@@ -1,6 +1,6 @@
 <?php
 /**
- * 2007-2017 PrestaShop
+ * 2007-2018 PrestaShop.
  *
  * NOTICE OF LICENSE
  *
@@ -19,22 +19,23 @@
  * needs please refer to http://www.prestashop.com for more information.
  *
  * @author    PrestaShop SA <contact@prestashop.com>
- * @copyright 2007-2017 PrestaShop SA
+ * @copyright 2007-2018 PrestaShop SA
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
+
 namespace PrestaShop\PrestaShop\Core\Addon\Theme;
 
-use PrestaShop\PrestaShop\Core\Module\HookConfigurator;
-use PrestaShop\PrestaShop\Core\Module\HookRepository;
-use PrestaShop\PrestaShop\Core\Image\ImageTypeRepository;
-use PrestaShop\PrestaShop\Adapter\Hook\HookInformationProvider;
-use PrestaShop\PrestaShop\Adapter\Configuration;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Finder\Finder;
-use Shop;
 use Context;
 use Db;
+use PrestaShop\PrestaShop\Adapter\Configuration;
+use PrestaShop\PrestaShop\Adapter\Hook\HookInformationProvider;
+use PrestaShop\PrestaShop\Core\Image\ImageTypeRepository;
+use PrestaShop\PrestaShop\Core\Module\HookConfigurator;
+use PrestaShop\PrestaShop\Core\Module\HookRepository;
+use Shop;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 
 class ThemeManagerBuilder
 {
@@ -81,7 +82,7 @@ class ThemeManagerBuilder
             $shop = $this->context->shop;
         }
 
-        $configuration = new Configuration($shop);
+        $configuration = new Configuration();
         $configuration->restrictUpdatesTo($shop);
 
         return new ThemeRepository(

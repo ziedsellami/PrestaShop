@@ -1,7 +1,7 @@
 <?php
 
 /**
- * 2007-2017 PrestaShop
+ * 2007-2018 PrestaShop.
  *
  * NOTICE OF LICENSE
  *
@@ -20,7 +20,7 @@
  * needs please refer to http://www.prestashop.com for more information.
  *
  * @author    PrestaShop SA <contact@prestashop.com>
- * @copyright 2007-2017 PrestaShop SA
+ * @copyright 2007-2018 PrestaShop SA
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
@@ -28,8 +28,8 @@
 namespace PrestaShopBundle\Translation\Extractor;
 
 use PrestaShop\PrestaShop\Core\Addon\Theme\Theme;
-use PrestaShop\TranslationToolsBundle\Translation\Extractor\SmartyExtractor;
 use PrestaShop\TranslationToolsBundle\Translation\Dumper\XliffFileDumper;
+use PrestaShop\TranslationToolsBundle\Translation\Extractor\SmartyExtractor;
 use PrestaShopBundle\Translation\Provider\ThemeProvider;
 use Symfony\Component\Translation\Dumper\FileDumper;
 use Symfony\Component\Translation\MessageCatalogue;
@@ -96,7 +96,7 @@ class ThemeExtractor
     }
 
     /**
-     * Add default catalogue in this &$catalogue when the translation exists
+     * Add default catalogue in this &$catalogue when the translation exists.
      *
      * @param string $locale
      * @param MessageCatalogue $catalogue
@@ -105,8 +105,7 @@ class ThemeExtractor
     {
         $defaultCatalogue = $this->themeProvider
             ->setLocale($locale)
-            ->getDefaultCatalogue()
-        ;
+            ->getDefaultCatalogue();
 
         if (empty($defaultCatalogue)) {
             return;
@@ -138,11 +137,12 @@ class ThemeExtractor
     }
 
     /**
-     * Add database catalogue in this &$catalogue
+     * Add database catalogue in this &$catalogue.
      *
      * @param string $themeName
      * @param string $locale
      * @param MessageCatalogue $catalogue
+     *
      * @throws \Exception
      */
     private function overrideFromDatabase($themeName, $locale, &$catalogue)
@@ -154,8 +154,7 @@ class ThemeExtractor
         $databaseCatalogue = $this->themeProvider
             ->setLocale($locale)
             ->setThemeName($themeName)
-            ->getDatabaseCatalogue()
-        ;
+            ->getDatabaseCatalogue();
 
         $catalogue->addCatalogue($databaseCatalogue);
     }

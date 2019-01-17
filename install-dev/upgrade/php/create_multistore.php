@@ -1,6 +1,6 @@
 <?php
 /**
- * 2007-2017 PrestaShop
+ * 2007-2018 PrestaShop
  *
  * NOTICE OF LICENSE
  *
@@ -19,12 +19,12 @@
  * needs please refer to http://www.prestashop.com for more information.
  *
  * @author    PrestaShop SA <contact@prestashop.com>
- * @copyright 2007-2017 PrestaShop SA
+ * @copyright 2007-2018 PrestaShop SA
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
 
-require_once(_PS_INSTALLER_PHP_UPGRADE_DIR_.'add_new_tab.php');
+require_once _PS_INSTALLER_PHP_UPGRADE_DIR_.'add_new_tab.php';
 
 function create_multistore()
 {
@@ -42,7 +42,7 @@ function create_multistore()
         return false;
     }
     $all_themes_dir = _PS_ROOT_DIR_.DIRECTORY_SEPARATOR.'themes';
-    $themes = scandir($all_themes_dir);
+    $themes = scandir($all_themes_dir, SCANDIR_SORT_NONE);
     foreach ($themes as $theme) {
         if (!is_file($all_themes_dir.DIRECTORY_SEPARATOR.$theme) && is_dir($all_themes_dir.DIRECTORY_SEPARATOR.$theme.DIRECTORY_SEPARATOR) && $theme[0] != '.' && $theme != 'prestashop'  && $theme != 'default-bootstrap' && $theme != _THEME_NAME_) {
             $res &= Db::getInstance()->execute('INSERT INTO '._DB_PREFIX_.'theme (name) VALUES("'.Db::getInstance()->escape($theme).'")');
@@ -90,5 +90,6 @@ function create_multistore()
 function create_multistore_getHttpHost()
 {
     $host = (isset($_SERVER['HTTP_X_FORWARDED_HOST']) ? $_SERVER['HTTP_X_FORWARDED_HOST'] : $_SERVER['HTTP_HOST']);
+
     return $host;
 }

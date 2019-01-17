@@ -1,6 +1,6 @@
 <?php
 /**
- * 2007-2017 PrestaShop
+ * 2007-2018 PrestaShop
  *
  * NOTICE OF LICENSE
  *
@@ -19,7 +19,7 @@
  * needs please refer to http://www.prestashop.com for more information.
  *
  * @author    PrestaShop SA <contact@prestashop.com>
- * @copyright 2007-2017 PrestaShop SA
+ * @copyright 2007-2018 PrestaShop SA
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
@@ -87,13 +87,13 @@ class Datas
             'name' => 'db_clear',
             'default' => '1',
             'validate' => 'isInt',
-            'help' => 'Drop existing tables'
+            'help' => 'Drop existing tables',
         ),
         'database_create' => array(
             'name' => 'db_create',
             'default' => '0',
             'validate' => 'isInt',
-            'help' => 'Create the database if not exist'
+            'help' => 'Create the database if not exist',
         ),
         'database_prefix' => array(
             'name' => 'prefix',
@@ -120,7 +120,7 @@ class Datas
             'name' => 'country',
             'validate' => 'isLanguageIsoCode',
             'default' => 'fr',
-            ),
+        ),
         'admin_firstname' => array(
             'name' => 'firstname',
             'validate' => 'isName',
@@ -139,12 +139,12 @@ class Datas
         'admin_email' => array(
             'name' => 'email',
             'validate' => 'isEmail',
-            'default' => 'pub@prestashop.com'
+            'default' => 'pub@prestashop.com',
         ),
         'show_license' => array(
             'name' => 'license',
             'default' => 0,
-            'help' => 'show PrestaShop license'
+            'help' => 'show PrestaShop license',
         ),
         'newsletter' => array(
             'name' => 'newsletter',
@@ -153,8 +153,13 @@ class Datas
         ),
         'theme' => array(
             'name' => 'theme',
-            'default' => ''
-        )
+            'default' => '',
+        ),
+        'enable_ssl' => array(
+            'name' => 'ssl',
+            'default' => 0,
+            'help' => 'enable SSL for PrestaShop',
+        ),
     );
 
     protected $datas = array();
@@ -178,6 +183,7 @@ class Datas
         if (Datas::$instance === null) {
             Datas::$instance = new Datas();
         }
+
         return Datas::$instance;
     }
 

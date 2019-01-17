@@ -1,5 +1,5 @@
 <!--**
- * 2007-2017 PrestaShop
+ * 2007-2018 PrestaShop
  *
  * NOTICE OF LICENSE
  *
@@ -18,30 +18,33 @@
  * needs please refer to http://www.prestashop.com for more information.
  *
  * @author    PrestaShop SA <contact@prestashop.com>
- * @copyright 2007-2017 PrestaShop SA
+ * @copyright 2007-2018 PrestaShop SA
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * International Registered Trademark & Property of PrestaShop SA
  *-->
 
 <template>
-	<div class="row py-2">
-    <div class="col row ml-1">
-		  <PSCheckbox ref="low-filter" id="low-filter" class="mt-1" @checked="onCheck" />
-		  <p class="ml-2 low-filter-label" @click="onLabelClick">{{trans('filter_low_stock')}}</p>
-    </div>
-    <div class="col">
-      <a class="float-sm-right ml-2" :href="stockImportUrl" target="_blank">
-        <span data-toggle="pstooltip" :title="stockImportTitle" data-html="true" data-placement="top">
-          <i class="material-icons">cloud_download</i>
-        </span>
-      </a>
-      <a class="float-sm-right" :href="stockExporttUrl">
-        <span data-toggle="pstooltip" :title="stockExportTitle" data-html="true" data-placement="top">
-          <i class="material-icons">cloud_upload</i>
-        </span>
-      </a>
+  <div class="container-fluid">
+     <div class="row py-2">
+       <div class="col row ml-1">
+         <PSCheckbox ref="low-filter" id="low-filter" class="mt-1" @checked="onCheck">
+           <span slot="label" class="ml-2">{{trans('filter_low_stock')}}</span>
+         </PSCheckbox>
+       </div>
+       <div class="col mr-3 d-flex align-items-center justify-content-end">
+         <a :href="stockExporttUrl">
+           <span data-toggle="pstooltip" :title="stockExportTitle" data-html="true" data-placement="top">
+             <i class="material-icons">cloud_upload</i>
+           </span>
+         </a>
+         <a class="ml-2" :href="stockImportUrl" target="_blank">
+           <span data-toggle="pstooltip" :title="stockImportTitle" data-html="true" data-placement="top">
+             <i class="material-icons">cloud_download</i>
+           </span>
+         </a>
+       </div>
+     </div>
   </div>
-	</div>
 </template>
 
 <script>
@@ -66,9 +69,6 @@ export default {
     },
   },
   methods: {
-    onLabelClick() {
-      this.$refs['low-filter'].checked = !this.$refs['low-filter'].checked;
-    },
     onCheck(checkbox) {
       const isChecked = checkbox.checked ? 1 : 0;
       this.$emit('lowStockChecked', isChecked);
@@ -82,9 +82,3 @@ export default {
   },
 };
 </script>
-
-<style lang="sass" scoped>
-  .low-filter-label {
-    cursor: pointer;
-  }
-</style>

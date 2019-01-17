@@ -1,6 +1,6 @@
 <?php
 /**
- * 2007-2017 PrestaShop
+ * 2007-2018 PrestaShop
  *
  * NOTICE OF LICENSE
  *
@@ -19,7 +19,7 @@
  * needs please refer to http://www.prestashop.com for more information.
  *
  * @author    PrestaShop SA <contact@prestashop.com>
- * @copyright 2007-2017 PrestaShop SA
+ * @copyright 2007-2018 PrestaShop SA
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
@@ -30,7 +30,7 @@ function add_group_attribute_position()
 	SELECT *
 	FROM `'._DB_PREFIX_.'attribute_group`');
     $i = 0;
-    if (sizeof($groups) && is_array($groups)) {
+    if (count($groups) && is_array($groups)) {
         foreach ($groups as $group) {
             Db::getInstance()->execute('
 				UPDATE `'._DB_PREFIX_.'attribute_group`

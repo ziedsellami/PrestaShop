@@ -115,8 +115,13 @@ export default function() {
               'attribute-ids': combinationsIds
             },
             url: deletionURL,
+            beforeSend: function () {
+              $('#create-combinations, #apply-on-combinations, #submit, .btn-submit').attr('disabled', 'disabled');
+            },
             success: function(response) {
               showSuccessMessage(response.message);
+              refreshTotalCombinations(-1, combinationsIds.length);
+              $('span.js-bulk-combinations').text('0');
               combinationsIds.forEach((combinationId) => {
                 var combination = new Combination(combinationId);
                 combination.removeFromDOM();
@@ -125,6 +130,9 @@ export default function() {
             },
             error: function(response) {
               showErrorMessage(jQuery.parseJSON(response.responseText).message);
+            },
+            complete: function () {
+              $('#create-combinations, #apply-on-combinations, #submit, .btn-submit').removeAttr('disabled');
             },
           });
         }
@@ -200,7 +208,12 @@ class Combination {
   updateForm(values) {
     values.forEach((valueObject) => {
       var valueId = valueObject.id.substr(this.inputBulkPattern.length);
-      $('#'+this.convertInput(valueId)).val(valueObject.value);
+      var $field = $('#'+this.convertInput(valueId));
+      if ($field.is(':checkbox')) {
+          $field.prop("checked", !!valueObject.value);
+      } else {
+          $field.val(valueObject.value);
+      }
     });
     return this.form;
   }
@@ -220,6 +233,7 @@ class Combination {
       case "reference":
       case "minimal_quantity":
       case "low_stock_threshold":
+      case "low_stock_alert":
         convertedInput = this.inputPattern + 'attribute_' + bulkInput;
         break;
       case "cost_price":

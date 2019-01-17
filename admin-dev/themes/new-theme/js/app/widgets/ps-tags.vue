@@ -1,5 +1,5 @@
 <!--**
- * 2007-2017 PrestaShop
+ * 2007-2018 PrestaShop
  *
  * NOTICE OF LICENSE
  *
@@ -18,21 +18,21 @@
  * needs please refer to http://www.prestashop.com for more information.
  *
  * @author    PrestaShop SA <contact@prestashop.com>
- * @copyright 2007-2017 PrestaShop SA
+ * @copyright 2007-2018 PrestaShop SA
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * International Registered Trademark & Property of PrestaShop SA
  *-->
 <template>
-  <div class="tags-input search-input" @click="focus()">
-    <span v-for="(tag, index) in tags" class="input-tag">
-      <span class="tag">{{ tag }}<i class="material-icons" @click="close(index)">close</i></span>
-    </span>
+  <div class="tags-input search-input search d-flex flex-wrap" :class="{ 'search-with-icon': hasIcon }" @click="focus()">
+    <div class="tags-wrapper">
+      <span v-for="(tag, index) in tags" class="tag">{{ tag }}<i class="material-icons" @click="close(index)">close</i></span>
+    </div>
     <input
       ref = "tags"
       :placeholder="placeholderToDisplay"
       type="text"
       v-model="tag"
-      class="input"
+      class="form-control input"
       @keyup="onKeyUp"
       @keydown.enter="add(tag)"
       @keydown.delete.stop="remove()"
@@ -44,7 +44,7 @@
 <script>
 
   export default {
-    props: ['tags', 'placeholder'],
+    props: ['tags', 'placeholder', 'hasIcon'],
     computed: {
       inputSize() {
         return !this.tags.length && this.placeholder ? this.placeholder.length : 0;
@@ -84,36 +84,3 @@
     data: () => ({ tag: null }),
   };
 </script>
-<style lang="sass">
-  @import "../../../scss/config/_settings.scss";
-  .tags-input {
-    .tag {
-      background: $brand-primary;
-      color: white;
-      padding: 2px 4px;
-      border-radius: 0;
-      font-weight: lighter;
-      display: inline-block;
-      margin: 2px;
-      min-height: 25px;
-      .material-icons {
-        vertical-align: middle;
-        color: $gray-dark;
-        margin: 0 2px 0 5px;
-        cursor: pointer;
-      }
-    }
-    input.input, input.input:focus {
-      background-color: white;
-      font-family: Open Sans, sans-serif;
-      cursor: text;
-      padding-left: 2px;
-      border: none;
-      outline: none;
-      min-height: 33px;
-      &::placeholder {
-       font-style: italic;
-      }
-    }
-  }
-</style>

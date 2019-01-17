@@ -1,6 +1,6 @@
 <?php
 /**
- * 2007-2017 PrestaShop
+ * 2007-2018 PrestaShop
  *
  * NOTICE OF LICENSE
  *
@@ -19,7 +19,7 @@
  * needs please refer to http://www.prestashop.com for more information.
  *
  * @author    PrestaShop SA <contact@prestashop.com>
- * @copyright 2007-2017 PrestaShop SA
+ * @copyright 2007-2018 PrestaShop SA
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
@@ -38,7 +38,8 @@ function set_stock_available()
         $quantity = 0;
 
         //Try to get product attribues
-        $attributes = Db::getInstance()->executeS('
+        $attributes = Db::getInstance()->executeS(
+            '
 			SELECT quantity, id_product_attribute
 			FROM `'._DB_PREFIX_.'product_attribute`
 			WHERE `id_product` = '.(int)$row['id_product']
@@ -76,5 +77,6 @@ function set_stock_available()
             return array('error' => Db::getInstance()->getNumberError(), 'msg' => '(products)'.Db::getInstance()->getMsgError());
         }
     }
+
     return $res;
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * 2007-2017 PrestaShop
+ * 2007-2018 PrestaShop.
  *
  * NOTICE OF LICENSE
  *
@@ -19,20 +19,18 @@
  * needs please refer to http://www.prestashop.com for more information.
  *
  * @author    PrestaShop SA <contact@prestashop.com>
- * @copyright 2007-2017 PrestaShop SA
+ * @copyright 2007-2018 PrestaShop SA
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
-
-
-use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchQuery;
+use PrestaShop\PrestaShop\Core\Product\Search\Facet;
+use PrestaShop\PrestaShop\Core\Product\Search\FacetsRendererInterface;
 use PrestaShop\PrestaShop\Core\Product\Search\Pagination;
 use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchContext;
-use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchResult;
-use PrestaShop\PrestaShop\Core\Product\Search\Facet;
-use PrestaShop\PrestaShop\Core\Product\Search\SortOrder;
 use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchProviderInterface;
-use PrestaShop\PrestaShop\Core\Product\Search\FacetsRendererInterface;
+use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchQuery;
+use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchResult;
+use PrestaShop\PrestaShop\Core\Product\Search\SortOrder;
 
 /**
  * This class is the base class for all front-end "product listing" controllers,
@@ -53,8 +51,7 @@ abstract class ProductListingFrontControllerCore extends ProductPresentingFrontC
     private function prepareProductForTemplate(array $rawProduct)
     {
         $product = (new ProductAssembler($this->context))
-            ->assembleProduct($rawProduct)
-        ;
+            ->assembleProduct($rawProduct);
 
         $presenter = $this->getProductPresenter();
         $settings = $this->getProductPresentationSettings();
@@ -96,8 +93,7 @@ abstract class ProductListingFrontControllerCore extends ProductPresentingFrontC
                 $this->context->customer ?
                     $this->context->customer->id :
                     null
-            )
-        ;
+            );
     }
 
     /**
@@ -163,7 +159,7 @@ abstract class ProductListingFrontControllerCore extends ProductPresentingFrontC
             'js_enabled' => $this->ajax,
             'activeFilters' => $activeFilters,
             'sort_order' => $result->getCurrentSortOrder()->toString(),
-            'clear_all_link' => $this->updateQueryString(array('q' => null, 'page' => null))
+            'clear_all_link' => $this->updateQueryString(array('q' => null, 'page' => null)),
         ));
     }
 
@@ -198,7 +194,7 @@ abstract class ProductListingFrontControllerCore extends ProductPresentingFrontC
 
         return $this->render('catalog/_partials/active_filters', array(
             'activeFilters' => $activeFilters,
-            'clear_all_link' => $this->updateQueryString(array('q' => null, 'page' => null))
+            'clear_all_link' => $this->updateQueryString(array('q' => null, 'page' => null)),
         ));
     }
 
@@ -244,8 +240,6 @@ abstract class ProductListingFrontControllerCore extends ProductPresentingFrontC
                 return $provider;
             }
         }
-
-        return;
     }
 
     /**
@@ -276,15 +270,14 @@ abstract class ProductListingFrontControllerCore extends ProductPresentingFrontC
         }
 
         $resultsPerPage = (int) Tools::getValue('resultsPerPage');
-        if ($resultsPerPage <= 0 || $resultsPerPage > 36) {
+        if ($resultsPerPage <= 0) {
             $resultsPerPage = Configuration::get('PS_PRODUCTS_PER_PAGE');
         }
 
         // we need to set a few parameters from back-end preferences
         $query
             ->setResultsPerPage($resultsPerPage)
-            ->setPage(max((int) Tools::getValue('page'), 1))
-        ;
+            ->setPage(max((int) Tools::getValue('page'), 1));
 
         // set the sort order if provided in the URL
         if (($encodedSortOrder = Tools::getValue('order'))) {
@@ -366,12 +359,14 @@ abstract class ProductListingFrontControllerCore extends ProductPresentingFrontC
             foreach ($sort_orders as $order) {
                 if (isset($order['current']) && true === $order['current']) {
                     $sort_selected = $order['label'];
+
                     break;
                 }
             }
         }
 
         $searchVariables = array(
+            'result' => $result,
             'label' => $this->getListingLabel(),
             'products' => $products,
             'sort_orders' => $sort_orders,
@@ -398,7 +393,7 @@ abstract class ProductListingFrontControllerCore extends ProductPresentingFrontC
      * Generated URLs will include the page number, obviously,
      * but also the sort order and the "q" (facets) parameters.
      *
-     * @param ProductSearchQuery  $query
+     * @param ProductSearchQuery $query
      * @param ProductSearchResult $result
      *
      * @return an array that makes rendering the pagination very easy
@@ -412,26 +407,41 @@ abstract class ProductListingFrontControllerCore extends ProductPresentingFrontC
             ->setPage($query->getPage())
             ->setPagesCount(
                 ceil($result->getTotalProductsCount() / $query->getResultsPerPage())
-            )
-        ;
+            );
 
         $totalItems = $result->getTotalProductsCount();
         $itemsShownFrom = ($query->getResultsPerPage() * ($query->getPage() - 1)) + 1;
         $itemsShownTo = $query->getResultsPerPage() * $query->getPage();
 
+        $pages = array_map(function ($link) {
+            $link['url'] = $this->updateQueryString(array(
+                'page' => $link['page'] > 1 ? $link['page'] : null,
+            ));
+
+            return $link;
+        }, $pagination->buildLinks());
+
+        //Filter next/previous link on first/last page
+        $pages = array_filter($pages, function ($page) use ($pagination) {
+            if ('previous' === $page['type'] && 1 === $pagination->getPage()) {
+                return false;
+            }
+            if ('next' === $page['type'] && $pagination->getPagesCount() === $pagination->getPage()) {
+                return false;
+            }
+
+            return true;
+        });
+
         return array(
             'total_items' => $totalItems,
             'items_shown_from' => $itemsShownFrom,
             'items_shown_to' => ($itemsShownTo <= $totalItems) ? $itemsShownTo : $totalItems,
-            'pages' => array_map(function ($link) {
-                $link['url'] = $this->updateQueryString(array(
-                    'page' => $link['page'],
-                ));
-
-                return $link;
-            }, $pagination->buildLinks()),
+            'current_page' => $pagination->getPage(),
+            'pages_count' => $pagination->getPagesCount(),
+            'pages' => $pages,
             // Compare to 3 because there are the next and previous links
-            'should_be_displayed' => (count($pagination->buildLinks()) > 3)
+            'should_be_displayed' => (count($pagination->buildLinks()) > 3),
         );
     }
 
@@ -442,7 +452,7 @@ abstract class ProductListingFrontControllerCore extends ProductPresentingFrontC
      * but not the page number because normally when you change the sort order
      * you want to go back to page one.
      *
-     * @param array  $sortOrders                   the available sort orders
+     * @param array $sortOrders the available sort orders
      * @param string $currentSortOrderURLParameter used to know which of the sort orders (if any) is active
      *
      * @return array
@@ -478,17 +488,34 @@ abstract class ProductListingFrontControllerCore extends ProductPresentingFrontC
         $rendered_products = $this->render('catalog/_partials/products', array('listing' => $search));
         $rendered_products_bottom = $this->render('catalog/_partials/products-bottom', array('listing' => $search));
 
-        $data = array(
-            'rendered_products_top' => $rendered_products_top,
-            'rendered_products' => $rendered_products,
-            'rendered_products_bottom' => $rendered_products_bottom,
+        $data = array_merge(
+            array(
+                'rendered_products_top' => $rendered_products_top,
+                'rendered_products' => $rendered_products,
+                'rendered_products_bottom' => $rendered_products_bottom,
+            ),
+            $search
         );
 
-        foreach ($search as $key => $value) {
-            $data[$key] = $value;
+        if (!empty($data['products']) && is_array($data['products'])) {
+            $data['products'] = $this->prepareProductArrayForAjaxReturn($data['products']);
         }
 
         return $data;
+    }
+
+    /**
+     * Cleans the products array with only whitelisted properties.
+     *
+     * @param array[] $products
+     *
+     * @return array[] Filtered product list
+     */
+    protected function prepareProductArrayForAjaxReturn(array $products)
+    {
+        $filter = $this->get('prestashop.core.filter.front_end_object.search_result_product_collection');
+
+        return $filter->filter($products);
     }
 
     /**
@@ -500,15 +527,15 @@ abstract class ProductListingFrontControllerCore extends ProductPresentingFrontC
      * If we're not doing AJAX, then render the whole page with the given template.
      *
      * @param string $template the template for this page
-     *
-     * @return no return
      */
     protected function doProductSearch($template, $params = array(), $locale = null)
     {
         if ($this->ajax) {
             ob_end_clean();
             header('Content-Type: application/json');
-            $this->ajaxDie(json_encode($this->getAjaxProductSearchVariables()));
+            $this->ajaxRender(json_encode($this->getAjaxProductSearchVariables()));
+
+            return;
         } else {
             $variables = $this->getProductSearchVariables();
             $this->context->smarty->assign(array(

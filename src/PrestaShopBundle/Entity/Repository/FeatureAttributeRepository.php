@@ -1,6 +1,6 @@
 <?php
 /**
- * 2007-2017 PrestaShop
+ * 2007-2018 PrestaShop.
  *
  * NOTICE OF LICENSE
  *
@@ -19,7 +19,7 @@
  * needs please refer to http://www.prestashop.com for more information.
  *
  * @author    PrestaShop SA <contact@prestashop.com>
- * @copyright 2007-2017 PrestaShop SA
+ * @copyright 2007-2018 PrestaShop SA
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
@@ -28,8 +28,8 @@ namespace PrestaShopBundle\Entity\Repository;
 
 use Doctrine\DBAL\Driver\Connection;
 use Employee;
-use PrestaShopBundle\Exception\NotImplementedException;
 use PrestaShop\PrestaShop\Adapter\LegacyContext as ContextAdapter;
+use PrestaShopBundle\Exception\NotImplementedException;
 use RuntimeException;
 use Shop;
 
@@ -59,17 +59,18 @@ class FeatureAttributeRepository
 
     /**
      * FeatureAttributeRepository constructor.
+     *
      * @param Connection $connection
      * @param ContextAdapter $contextAdapter
      * @param $tablePrefix
+     *
      * @throws NotImplementedException
      */
     public function __construct(
         Connection $connection,
         ContextAdapter $contextAdapter,
         $tablePrefix
-    )
-    {
+    ) {
         $this->connection = $connection;
         $this->tablePrefix = $tablePrefix;
 
@@ -80,7 +81,7 @@ class FeatureAttributeRepository
         }
 
         $languageId = $context->employee->id_lang;
-        $this->languageId = (int)$languageId;
+        $this->languageId = (int) $languageId;
 
         if (!$context->shop instanceof Shop) {
             throw new RuntimeException('Determining the active shop requires a contextual shop instance.');
@@ -132,7 +133,8 @@ class FeatureAttributeRepository
                 AND LENGTH(TRIM(agl.name)) > 0
             )
             GROUP BY ag.id_attribute_group
-        ');
+        '
+        );
 
         $statement = $this->connection->prepare($query);
 
@@ -181,7 +183,8 @@ class FeatureAttributeRepository
             WHERE fv.custom = 0
             GROUP BY fv.id_feature
             ORDER BY f.id_feature
-        ');
+        '
+        );
 
         $statement = $this->connection->prepare($query);
 
@@ -198,6 +201,7 @@ class FeatureAttributeRepository
 
     /**
      * @param $rows
+     *
      * @return array
      */
     private function explodeCollections($rows)

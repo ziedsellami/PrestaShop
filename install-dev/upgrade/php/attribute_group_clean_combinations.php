@@ -1,6 +1,6 @@
 <?php
 /**
- * 2007-2017 PrestaShop
+ * 2007-2018 PrestaShop
  *
  * NOTICE OF LICENSE
  *
@@ -19,7 +19,7 @@
  * needs please refer to http://www.prestashop.com for more information.
  *
  * @author    PrestaShop SA <contact@prestashop.com>
- * @copyright 2007-2017 PrestaShop SA
+ * @copyright 2007-2018 PrestaShop SA
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
@@ -41,7 +41,9 @@ function attribute_group_clean_combinations()
     if (!empty($toRemove)) {
         $res = Db::getInstance()->execute('DELETE FROM `'._DB_PREFIX_.'product_attribute`
 			WHERE `id_product_attribute` IN ('.implode(', ', $toRemove).')');
+
         return $res;
     }
+
     return true;
 }

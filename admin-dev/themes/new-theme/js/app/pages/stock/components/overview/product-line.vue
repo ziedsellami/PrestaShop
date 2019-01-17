@@ -1,5 +1,5 @@
 <!--**
- * 2007-2017 PrestaShop
+ * 2007-2018 PrestaShop
  *
  * NOTICE OF LICENSE
  *
@@ -18,30 +18,32 @@
  * needs please refer to http://www.prestashop.com for more information.
  *
  * @author    PrestaShop SA <contact@prestashop.com>
- * @copyright 2007-2017 PrestaShop SA
+ * @copyright 2007-2018 PrestaShop SA
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * International Registered Trademark & Property of PrestaShop SA
  *-->
 <template>
   <tr :class="{'low-stock':lowStock}">
-    <td class="d-flex align-items-center pr-1">
-      <PSCheckbox
-        :id="id"
-        :ref="id"
-        :model="product"
-        @checked="productChecked"
-      />
-      <PSMedia
-        class="ml-1"
-        :thumbnail="thumbnail"
-      >
-        <p>
-          {{ product.product_name }}
-          <small v-if="hasCombination"><br />
-            {{ combinationName }}
-          </small>
-        </p>
-      </PSMedia>
+    <td>
+      <div class="d-flex align-items-center">
+        <PSCheckbox
+          :id="id"
+          :ref="id"
+          :model="product"
+          @checked="productChecked"
+        />
+        <PSMedia
+          class="d-flex align-items-center ml-2"
+          :thumbnail="thumbnail"
+        >
+          <p>
+            {{ product.product_name }}
+            <small v-if="hasCombination"><br />
+              {{ combinationName }}
+            </small>
+          </p>
+        </PSMedia>
+      </div>
     </td>
     <td>
       {{ reference }}
@@ -65,16 +67,16 @@
     <td class="text-sm-center" :class="{'stock-warning':lowStock}">
       {{ product.product_reserved_quantity }}
     </td>
-    <td class="text-sm-left pl-4" :class="{'stock-warning':lowStock}">
+    <td class="text-sm-center" :class="{'stock-warning':lowStock}">
       {{ product.product_available_quantity }}
       <span v-if="updatedQty" class="qty-update" :class="{'stock-warning':lowStock}">
         <i class="material-icons">trending_flat</i>
         {{availableQtyUpdated}}
       </span>
-      <span v-if="lowStock" class="stock-warning ico ml-4" data-toggle="pstooltip" data-placement="top" data-html="true" :title="lowStockLevel">!</span>
+      <span v-if="lowStock" class="stock-warning ico ml-2" data-toggle="pstooltip" data-placement="top" data-html="true" :title="lowStockLevel">!</span>
     </td>
-    <td class="qty-spinner">
-      <Spinner :product="product" class="pull-xs-right" @updateProductQty="updateProductQty" />
+    <td class="qty-spinner text-right">
+      <Spinner :product="product" @updateProductQty="updateProductQty" />
     </td>
   </tr>
 </template>
@@ -118,6 +120,11 @@
         return `<div class="text-sm-left">
                   <p>${this.trans('product_low_stock')}</p>
                   <p><strong>${this.trans('product_low_stock_level')} ${this.product.product_low_stock_threshold}</strong></p>
+                </div>`;
+      },
+      lowStockAlert() {
+        return `<div class="text-sm-left">
+                  <p><strong>${this.trans('product_low_stock_alert')} ${this.product.product_low_stock_alert}</strong></p>
                 </div>`;
       },
       id() {
@@ -165,35 +172,3 @@
     },
   };
 </script>
-
-<style lang="sass" scoped>
-  @import "../../../../../../scss/config/_settings.scss";
-  .qty-update {
-    color: $brand-primary;
-    .material-icons {
-      vertical-align: middle;
-    }
-  }
-  .checkbox {
-    width: 5%;
-  }
-  .enable {
-    color: $success;
-  }
-  .disable {
-    color: $danger;
-  }
-  .low-stock {
-    background: $danger-hover;
-    .stock-warning {
-      color: $danger;
-      font-weight: bold;
-      &.ico {
-        border: 1px solid $danger;
-        background: lighten($danger, 30%);
-        padding: 0 5px;
-        cursor: pointer;
-      }
-    }
-  }
-</style>

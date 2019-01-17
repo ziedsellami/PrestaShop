@@ -1,6 +1,6 @@
 <?php
 /**
- * 2007-2017 PrestaShop
+ * 2007-2018 PrestaShop
  *
  * NOTICE OF LICENSE
  *
@@ -19,7 +19,7 @@
  * needs please refer to http://www.prestashop.com for more information.
  *
  * @author    PrestaShop SA <contact@prestashop.com>
- * @copyright 2007-2017 PrestaShop SA
+ * @copyright 2007-2018 PrestaShop SA
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
@@ -32,7 +32,7 @@ use PrestaShopBundle\Install\LanguageList;
  */
 function migrate_tabs_17()
 {
-    include_once(_PS_INSTALL_PATH_.'upgrade/php/add_new_tab.php');
+    include_once _PS_INSTALL_PATH_.'upgrade/php/add_new_tab.php';
 
     /* first make some room for new tabs */
     $moduleTabs = Db::getInstance()->executeS(

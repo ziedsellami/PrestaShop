@@ -1,6 +1,6 @@
 <?php
 /**
- * 2007-2017 PrestaShop
+ * 2007-2018 PrestaShop.
  *
  * NOTICE OF LICENSE
  *
@@ -19,12 +19,10 @@
  * needs please refer to http://www.prestashop.com for more information.
  *
  * @author    PrestaShop SA <contact@prestashop.com>
- * @copyright 2007-2017 PrestaShop SA
+ * @copyright 2007-2018 PrestaShop SA
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
-
-
 use PrestaShop\PrestaShop\Adapter\Product\PriceFormatter;
 
 class CheckoutDeliveryStepCore extends AbstractCheckoutStep
@@ -109,15 +107,13 @@ class CheckoutDeliveryStepCore extends AbstractCheckoutStep
                 $taxLabel .= ' tax excl.';
             }
 
-            return sprintf(
-                $this->getTranslator()->trans(
-                    ' (additional cost of %giftcost% %taxlabel%)',
-                    array(
-                        '%giftcost%' => $priceFormatter->convertAndFormat($this->getGiftCost()),
-                        '%taxlabel%' => $taxLabel,
-                    ),
-                    'Shop.Theme.Checkout'
-                )
+            return $this->getTranslator()->trans(
+                ' (additional cost of %giftcost% %taxlabel%)',
+                array(
+                    '%giftcost%' => $priceFormatter->convertAndFormat($this->getGiftCost()),
+                    '%taxlabel%' => $taxLabel,
+                ),
+                'Shop.Theme.Checkout'
             );
         }
 
@@ -135,7 +131,7 @@ class CheckoutDeliveryStepCore extends AbstractCheckoutStep
             );
             $this->getCheckoutSession()->setGift(
                 isset($requestParams['gift']) ? $requestParams['gift'] : false,
-                (isset($requestParams['gift']) && isset($requestParams['gift_message'])) ? $requestParams['gift_message'] : ''
+                (isset($requestParams['gift']['gift_message'])) ? $requestParams['gift_message'] : ''
             );
         }
 
@@ -152,8 +148,7 @@ class CheckoutDeliveryStepCore extends AbstractCheckoutStep
             // - the module associated to the delivery option confirms
             $deliveryOptions = $this->getCheckoutSession()->getDeliveryOptions();
             $this->step_is_complete =
-                !empty($deliveryOptions) && $this->getCheckoutSession()->getSelectedDeliveryOption() && $this->isModuleComplete($requestParams)
-            ;
+                !empty($deliveryOptions) && $this->getCheckoutSession()->getSelectedDeliveryOption() && $this->isModuleComplete($requestParams);
         }
 
         $this->setTitle($this->getTranslator()->trans('Shipping Method', array(), 'Shop.Theme.Checkout'));
@@ -205,7 +200,9 @@ class CheckoutDeliveryStepCore extends AbstractCheckoutStep
                 'request_params' => $requestParams,
                 'completed' => &$isComplete,
             ),
-            Module::getModuleIdByName($currentDeliveryOption['external_module_name']));
+            Module::getModuleIdByName($currentDeliveryOption['external_module_name'])
+        );
+
         return $isComplete;
     }
 }

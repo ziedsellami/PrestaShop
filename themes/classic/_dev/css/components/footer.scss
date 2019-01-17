@@ -8,7 +8,7 @@
     .input-wrapper {
       overflow: hidden;
     }
-    input[type=text] {
+    input[type=email] {
       padding: 11px;
       &:focus {
         border: 3px $brand-primary solid;
@@ -25,8 +25,6 @@
   margin-bottom: 0.625rem;
 }
 .block-contact {
-  border-left: $gray-light 2px solid;
-  padding-left: 3rem;
   color: $gray;
   .block-contact-title{
     color:$gray-darker;
@@ -160,12 +158,13 @@
       color: $brand-primary;
     }
   }
-  .links {
-    .collapse {
-      display: inherit;
-    }
+}
+.links {
+  .collapse {
+    display: inherit;
   }
 }
+
 
 @include media-breakpoint-down(sm) {
   .block_newsletter {
@@ -184,32 +183,6 @@
         line-height: 1.5;
         font-size: 1rem;
       }
-      .title {
-        padding: 0.625rem;
-        border-bottom: 1px solid $gray-lighter;
-        cursor: pointer;
-        .collapse-icons .remove {
-          display: none;
-        }
-      }
-      .title[aria-expanded="true"] .collapse-icons {
-        .add {
-          display: none;
-        }
-        .remove {
-          display: block;
-        }
-      }
-      .navbar-toggler {
-        display: inline-block;
-        padding: 0;
-      }
-      .collapse {
-        display: none;
-        &.in {
-          display: block;
-        }
-      }
       ul {
         background-color: $gray-lighter;
         margin-bottom: 0;
@@ -222,6 +195,34 @@
           }
         }
       }
+    }
+  }
+  .links {
+    .collapse {
+      display: none;
+      &.in {
+        display: block;
+      }
+    }
+    .title {
+      padding: 0.625rem;
+      border-bottom: 1px solid $gray-lighter;
+      cursor: pointer;
+      .collapse-icons .remove {
+        display: none;
+      }
+    }
+    .title[aria-expanded="true"] .collapse-icons {
+      .add {
+        display: none;
+      }
+      .remove {
+        display: block;
+      }
+    }
+    .navbar-toggler {
+      display: inline-block;
+      padding: 0;
     }
   }
 }

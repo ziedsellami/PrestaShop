@@ -1,6 +1,6 @@
 <?php
 /**
- * 2007-2017 PrestaShop
+ * 2007-2018 PrestaShop.
  *
  * NOTICE OF LICENSE
  *
@@ -19,14 +19,14 @@
  * needs please refer to http://www.prestashop.com for more information.
  *
  * @author    PrestaShop SA <contact@prestashop.com>
- * @copyright 2007-2017 PrestaShop SA
+ * @copyright 2007-2018 PrestaShop SA
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\Definition;
 use PrestaShop\PrestaShop\Adapter\Configuration;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 
 class LegacyCompilerPass implements CompilerPassInterface
 {
@@ -48,7 +48,7 @@ class LegacyCompilerPass implements CompilerPassInterface
         ], $container);
 
         $container->set('context', $context);
-        $container->set('configuration', new Configuration($context->shop));
+        $container->set('configuration', new Configuration());
         $container->set('db', Db::getInstance());
         $container->set('shop', $context->shop);
         $container->set('employee', $context->employee);

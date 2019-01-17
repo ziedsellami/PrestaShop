@@ -1,5 +1,5 @@
 <!--**
- * 2007-2017 PrestaShop
+ * 2007-2018 PrestaShop
  *
  * NOTICE OF LICENSE
  *
@@ -18,7 +18,7 @@
  * needs please refer to http://www.prestashop.com for more information.
  *
  * @author    PrestaShop SA <contact@prestashop.com>
- * @copyright 2007-2017 PrestaShop SA
+ * @copyright 2007-2018 PrestaShop SA
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * International Registered Trademark & Property of PrestaShop SA
  *-->
@@ -35,7 +35,7 @@
         :isIndeterminate="isIndeterminate"
         @checked="bulkChecked"
       />
-      <div class="ml-1">
+      <div class="ml-2">
         <small>{{trans('title_bulk')}}</small>
         <PSNumber
           class="bulk-qty"
@@ -43,7 +43,7 @@
           :value="bulkEditQty"
           :buttons="this.isFocused"
           @focus="focusIn"
-          @blur="focusOut"
+          @blur="focusOut($event)"
           @change="onChange"
           @keyup="onKeyUp"
         />
@@ -111,8 +111,8 @@
           EventBus.$emit('displayBulkAlert', 'error');
         }
       },
-      focusOut() {
-        this.isFocused = false;
+      focusOut(event) {
+        this.isFocused = $(event.target).hasClass('ps-number');
         this.danger = false;
       },
       bulkChecked(checkbox) {
@@ -145,17 +145,3 @@
     },
   };
 </script>
-
-<style lang="sass" scoped>
-  @import "../../../../../../scss/config/_settings.scss";
-  .bulk-qty {
-    max-width: 100px;
-  }
-  .update-qty {
-    color: white;
-    transition: background-color 0.2s ease;
-  }
-  .product-actions .qty {
-    padding-left: 20px;
-  }
-</style>

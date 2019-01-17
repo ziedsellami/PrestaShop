@@ -1,6 +1,6 @@
 <?php
 /**
- * 2007-2017 PrestaShop
+ * 2007-2018 PrestaShop
  *
  * NOTICE OF LICENSE
  *
@@ -19,11 +19,10 @@
  * needs please refer to http://www.prestashop.com for more information.
  *
  * @author    PrestaShop SA <contact@prestashop.com>
- * @copyright 2007-2017 PrestaShop SA
+ * @copyright 2007-2018 PrestaShop SA
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
-
 
 use Symfony\Component\VarDumper\VarDumper;
 
@@ -59,7 +58,7 @@ function displayFatalError()
     if (function_exists('error_get_last')) {
         $error = error_get_last();
     }
-    if ($error !== null && in_array($error['type'], array(E_ERROR, E_PARSE, E_COMPILE_ERROR ))) {
+    if ($error !== null && in_array($error['type'], array(E_ERROR, E_PARSE, E_COMPILE_ERROR))) {
         echo '[PrestaShop] Fatal error in module file: '.$error['file'].':'.$error['line'].'<br />'.$error['message'];
     }
 }

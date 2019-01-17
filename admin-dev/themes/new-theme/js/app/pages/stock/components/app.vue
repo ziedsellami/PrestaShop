@@ -1,5 +1,5 @@
 <!--**
- * 2007-2017 PrestaShop
+ * 2007-2018 PrestaShop
  *
  * NOTICE OF LICENSE
  *
@@ -18,23 +18,23 @@
  * needs please refer to http://www.prestashop.com for more information.
  *
  * @author    PrestaShop SA <contact@prestashop.com>
- * @copyright 2007-2017 PrestaShop SA
+ * @copyright 2007-2018 PrestaShop SA
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * International Registered Trademark & Property of PrestaShop SA
  *-->
 <template>
-  <div v-if="isReady" id="app" class="stock-app">
+  <div v-if="isReady" id="app" class="stock-app container-fluid">
     <StockHeader />
     <Search @search="onSearch" @applyFilter="applyFilter" />
     <LowFilter v-if="isOverview" :filters="filters" @lowStockChecked="onLowStockChecked" />
-    <div class="card pa-2">
+    <div class="card container-fluid pa-2 clearfix">
       <router-view class="view" @resetFilters="resetFilters" @fetch="fetch"></router-view>
+      <PSPagination
+        :currentIndex="currentPagination"
+        :pagesCount="pagesCount"
+        @pageChanged="onPageChanged"
+      />
     </div>
-    <PSPagination
-      :currentIndex="currentPagination"
-      :pagesCount="pagesCount"
-      @pageChanged="onPageChanged"
-    />
   </div>
 </template>
 
@@ -62,16 +62,12 @@
     },
     methods: {
       onPageChanged(pageIndex) {
-        const desc = this.$route.name === 'overview' ? '' : ' desc';
         this.$store.dispatch('updatePageIndex', pageIndex);
-        this.fetch(desc);
+        this.fetch('asc');
       },
-      fetch(desc) {
-        let sorting = desc;
+      fetch(sortDirection) {
         const action = this.$route.name === 'overview' ? 'getStock' : 'getMovements';
-        if (typeof desc !== 'string') {
-          sorting = ' desc';
-        }
+        const sorting = (sortDirection === 'desc') ? ' desc' : '';
         this.$store.dispatch('isLoading');
 
         this.filters = Object.assign({}, this.filters, {
@@ -113,23 +109,10 @@
   };
 </script>
 
-<style lang="sass">
-  @import "../../../../../scss/config/_settings.scss";
-  .header-toolbar {
-    z-index: 0;
-    height: 120px;
-  }
-  .stock-app {
-    padding-top: 3em;
-  }
-  .table tr td {
-    border: none;
-    padding: 5px 5px 5px;
-    vertical-align: top;
-    &:not(.qty-spinner) {
-      padding-top:14px;
-    }
-    word-wrap: break-word;
-    white-space: normal;
+<style lang="sass" type="text/scss">
+  // hide the layout header
+  #main-div > .header-toolbar {
+    height: 0;
+    display: none;
   }
 </style>
